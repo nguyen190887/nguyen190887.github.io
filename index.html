@@ -19,18 +19,28 @@ layout: default
 		</ul>
 
 		<div>
-			<button onclick="fireEvent()">Click to fire Event</button>
+			<button>Click to fire Event</button>
+			<button>Button 2</button>
+			<a href="#">Another link</a>
 		</div>
 	</div>
-
+	
 	<script>
-		function fireEvent(){
-			gtag('event', 'click', {
-				'app_name': 'TestApp',
-				'screen_name': 'Home',
-				'time': new Date().toISOString()
-			});
-		}
+		window.gtag = window.gtag || ((type, name, data) => console.log(type, name, data)); // for local debug
+
+		document.addEventListener('click', function(evnt){
+			// console.log(evnt.target.id, evnt.target.innerText);
+			const tagName = evnt.target.tagName.toLowerCase();
+			if (tagName === 'a' || tagName === 'button') {
+				gtag('event', 'click', {
+					'app_name': 'TestApp',
+					'screen_name': 'Home',
+					'time': new Date().toISOString(),
+					'id': evnt.target.id,
+					'text': evnt.target.innerText,
+				});
+			}
+		});
 	</script>
   </body>
 </html>
